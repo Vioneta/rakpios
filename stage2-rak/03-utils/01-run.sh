@@ -18,6 +18,9 @@ on_chroot << EOF
 runuser -l ${FIRST_USER_NAME} -c 'curl https://raw.githubusercontent.com/RAKWireless/rakpios-cli/main/rakpios-cli -sSf | bash -s -- --install --silent'
 EOF
 
+# Add wisblock USB rules
+install -m 644 files/99-wisblock.rules "${ROOTFS_DIR}/etc/udev/rules.d/"
+
 # Add create_ap service
 install -m 644 files/create-ap.service "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 755 files/create-ap "${ROOTFS_DIR}/usr/local/bin/"
