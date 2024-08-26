@@ -239,6 +239,8 @@ source "${SCRIPT_DIR}/common"
 source "${SCRIPT_DIR}/dependencies_check"
 
 # RAKPiOS variables
+export NAME=${NAME:-"RAKPiOS"}
+export VERSION
 export ARCH=${ARCH:-"arm64"}
 export KERNEL_BUILD=${KERNEL_BUILD:-0}
 export KERNEL_CACHED=${KERNEL_CACHED:-0}
