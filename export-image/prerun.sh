@@ -32,16 +32,27 @@ parted --script "${IMG_FILE}" mklabel msdos
 parted --script "${IMG_FILE}" unit B mkpart primary fat32 "${BOOT_PART_START}" "$((BOOT_PART_START + BOOT_PART_SIZE - 1))"
 parted --script "${IMG_FILE}" unit B mkpart primary ext4 "${ROOT_PART_START}" "$((ROOT_PART_START + ROOT_PART_SIZE - 1))"
 
-echo "Creating loop device..."
-cnt=0
-until ensure_next_loopdev && LOOP_DEV="$(losetup --show --find --partscan "$IMG_FILE")"; do
-	if [ $cnt -lt 5 ]; then
-		cnt=$((cnt + 1))
-		echo "Error in losetup.  Retrying..."
-		sleep 5
-	else
-		echo "ERROR: losetup failed; exiting"
-		exit 1
+	echo "Creating loop device..."
+	cnt=0
+	until ensure_next_loopdev && LOOP_DEV="$(losetup --show --find --partscan "$IMG_FILE")"; do
+		if [ $cnt -lt 5 ]; then
+			cnt=$((cnt + 1))
+			echo "Error in losetup.  Retrying..."
+			sleep 5
+		else
+			echo "ERROR: losetup failed; exiting"
+			exit 1
+		fi
+	done
+
+	ensure_loopdev_partitions "$LOOP_DEV"
+	BOOT_DEV="${LOOP_DEV}p1"
+	ROOT_DEV="${LOOP_DEV}p2"
+
+	ROOT_FEATURES="^huge_file"
+	for FEATURE in 64bit; do
+	if grep -q "$FEATURE" /etc/mke2fs.conf; then
+		ROOT_FEATURES="^$FEATURE,$ROOT_FEATURES"
 	fi
 done
 
