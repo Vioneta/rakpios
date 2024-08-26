@@ -10,6 +10,9 @@ on_chroot << EOF
 systemctl enable oled
 EOF
 
+# Add miromico's mioty edge card script
+install -m 755 files/mioty "${ROOTFS_DIR}/usr/local/bin/"
+
 # Add portainer up script
 install -m 755 files/portainer "${ROOTFS_DIR}/usr/local/bin/"
 
