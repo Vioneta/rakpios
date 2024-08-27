@@ -2,7 +2,7 @@
 
 # Add custom firstboot script
 install -m 755 files/firstboot-rak "${ROOTFS_DIR}/usr/bin/"
-install -d 766 "${ROOTFS_DIR}/usr/share/firstboot.d/"
+install -d "${ROOTFS_DIR}/usr/share/firstboot.d/"
 install -m 755 files/firstboot.d/* "${ROOTFS_DIR}/usr/share/firstboot.d/"
 sed -i "s|main$|main\nfirstboot-rak\n|" "${ROOTFS_DIR}/usr/lib/raspberrypi-sys-mods/firstboot"
 

@@ -27,10 +27,11 @@ install -m 644 files/99-wisblock.rules "${ROOTFS_DIR}/etc/udev/rules.d/"
 # Add create_ap service
 install -m 644 files/create-ap.service "${ROOTFS_DIR}/etc/systemd/system/"
 install -m 755 files/create-ap "${ROOTFS_DIR}/usr/local/bin/"
-install -d 766 "${ROOTFS_DIR}/usr/local/share/wifi-connect/"
+install -d "${ROOTFS_DIR}/usr/local/share/wifi-connect/"
 tar xvzf files/wifi-connect-v4.4.6-linux-aarch64-rakwireless.tar.gz -C files/
 install -m 755 files/wifi-connect-v4.4.6-linux-aarch64-rakwireless/wifi-connect "${ROOTFS_DIR}/usr/local/sbin/"
 cp -r files/wifi-connect-v4.4.6-linux-aarch64-rakwireless/ui "${ROOTFS_DIR}/usr/local/share/wifi-connect/"
+rm -rf files/wifi-connect-v4.4.6-linux-aarch64-rakwireless
 on_chroot << EOF
 systemctl enable create-ap
 EOF
